@@ -3,19 +3,17 @@
     <div class="month_calendar"></div>
     <div class="weekly_calendar">
       <!-- <pre>{{ events }}</pre> -->
-      <v-btn
-        icon
-        class="ma-2"
-        color="grey darken-2"
-        @click="$refs.calendar.prev()"
-      >
-        <v-icon>mdi-chevron-left</v-icon>
-      </v-btn>
-      <v-btn icon class="ma-2" @click="$refs.calendar.next()">
-        <v-icon>mdi-chevron-left</v-icon>
-      </v-btn>
       <v-sheet tile height="54" class="navbar">
-        <h1 class="calendar_title">預約行事曆</h1>
+        <h1 class="calendar_title" v-if="type === 'week'">預約行事曆</h1>
+        <div class="complete_date" v-if="type === 'day'">
+          <v-btn icon class="day_button" color="grey darken-2" @click="prev()">
+            <i class="fas fa-chevron-left"></i>
+          </v-btn>
+          {{ completeDate }}
+          <v-btn icon class="day_button" @click="next()">
+            <i class="fas fa-chevron-right"></i>
+          </v-btn>
+        </div>
         <v-select
           class="change_week_and_day"
           :value="type"
@@ -62,6 +60,9 @@
           @change="getEvents"
         ></v-calendar>
       </v-sheet>
+      <div class="add_event">
+        <v-btn class="add_event_button" @click="addEvent()">新增預約</v-btn>
+      </div>
     </div>
   </div>
 </template>
@@ -87,6 +88,7 @@ export default {
       text: ["M", "T", "W", "T", "F", "S", "S"],
       user: "莉",
       users: ["莉", "茜"],
+      completeDate: dayjs().format("YYYY / MM / DD"),
     };
   },
   created() {
@@ -100,19 +102,30 @@ export default {
       return acc;
     }, []);
   },
+  // watch: {
+  //   completeDate() {
+  //     console.log(this.completeDate);
+  //     this.completeDate = this.completeDate;
+  //   },
+  // },
+  computed: {
+    test01() {
+      console.log(this.completeDate);
+      return this.completeDate;
+    },
+  },
   methods: {
     getEvents() {
-      const events = [];
-
-      events.push({
+      // const events = [];
+      this.events.push({
         name: `${"美甲保養"} \n ${"王小美"}`,
-        start: dayjs().add(1, "day").format("YYYY-MM-DD 14:00:00"),
-        end: dayjs().add(1, "day").format("YYYY-MM-DD 15:00:00"),
+        start: dayjs().format("YYYY-MM-DD 14:00:00"),
+        end: dayjs().format("YYYY-MM-DD 15:00:00"),
         color: this.color,
-        timed: events.end,
+        timed: this.events.end,
       });
 
-      this.events = events;
+      // this.events = events;
     },
     changeWeekAndDay(event) {
       this.type = event;
@@ -121,6 +134,28 @@ export default {
     changeUser(event) {
       this.user = event;
       console.log("user", this.user);
+    },
+    prev() {
+      this.$refs.calendar.prev();
+      // dayjs() 抓的永遠是今天的日期，所以不論執行幾次 add 都會以今天為基準點去加減
+      this.completeDate = dayjs(this.completeDate)
+        .add(-1, "day")
+        .format("YYYY / MM / DD");
+    },
+    next() {
+      this.$refs.calendar.next();
+      this.completeDate = dayjs(this.completeDate)
+        .add(1, "day")
+        .format("YYYY / MM / DD");
+    },
+    addEvent() {
+      this.events.push({
+        name: `${"美甲保養"} \n ${"王小美"}`,
+        start: dayjs().add(1, "day").format("YYYY-MM-DD 14:00:00"),
+        end: dayjs().add(1, "day").format("YYYY-MM-DD 15:00:00"),
+        color: this.color,
+        timed: this.events.end,
+      });
     },
   },
 };
@@ -160,18 +195,41 @@ export default {
 }
 
 .navbar {
+  padding: 0 8px;
   display: flex;
   align-items: center;
   gap: 8px;
+  @media (min-width: 768px) {
+    padding: 40px;
+  }
   .calendar_title {
     flex: 2;
     font-size: 20px;
   }
+  .complete_date {
+    flex: 2;
+    font-size: 14px;
+    @media (min-width: 768px) {
+      font-size: 20px;
+    }
+    .day_button {
+      width: 16px;
+      @media (min-width: 768px) {
+        width: 32px;
+      }
+    }
+  }
   .change_week_and_day {
     flex: 2;
+    @media (min-width: 768px) {
+      flex: 0 0 20%;
+    }
   }
   .user {
     flex: 1;
+    @media (min-width: 768px) {
+      flex: 0 0 10%;
+    }
   }
 }
 
@@ -219,5 +277,16 @@ export default {
       }
     }
   }
+}
+
+.add_event {
+  padding: 16px 0;
+  display: flex;
+  justify-content: center;
+}
+
+::v-deep .theme--light.v-btn.v-btn--has-bg {
+  padding: 20px 40px;
+  color: white;
 }
 </style>
