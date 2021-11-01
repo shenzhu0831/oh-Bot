@@ -12,11 +12,10 @@
         <v-icon>mdi-chevron-left</v-icon>
       </v-btn>
       <v-btn icon class="ma-2" @click="$refs.calendar.next()">
-        <div class="button_icon"></div>
+        <v-icon>mdi-chevron-left</v-icon>
       </v-btn>
       <v-sheet tile height="54" class="navbar">
         <h1 class="calendar_title">預約行事曆</h1>
-        <!-- v-model="type" -->
         <v-select
           class="change_week_and_day"
           :value="type"
