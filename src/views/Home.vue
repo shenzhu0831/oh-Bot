@@ -286,7 +286,7 @@ export default {
 }
 
 ::v-deep .theme--light.v-btn.v-btn--has-bg {
-  padding: 20px 40px;
+  padding: 25px 40px;
   color: white;
 }
 </style>
