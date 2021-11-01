@@ -2,7 +2,6 @@
   <div class="Calendar">
     <div class="month_calendar"></div>
     <div class="weekly_calendar">
-      <!-- <pre>{{ events }}</pre> -->
       <v-sheet tile height="54" class="navbar">
         <h1 class="calendar_title" v-if="type === 'week'">預約行事曆</h1>
         <div class="complete_date" v-if="type === 'day'">
@@ -102,21 +101,8 @@ export default {
       return acc;
     }, []);
   },
-  // watch: {
-  //   completeDate() {
-  //     console.log(this.completeDate);
-  //     this.completeDate = this.completeDate;
-  //   },
-  // },
-  computed: {
-    test01() {
-      console.log(this.completeDate);
-      return this.completeDate;
-    },
-  },
   methods: {
     getEvents() {
-      // const events = [];
       this.events.push({
         name: `${"美甲保養"} \n ${"王小美"}`,
         start: dayjs().format("YYYY-MM-DD 14:00:00"),
@@ -124,8 +110,6 @@ export default {
         color: this.color,
         timed: this.events.end,
       });
-
-      // this.events = events;
     },
     changeWeekAndDay(event) {
       this.type = event;
@@ -166,7 +150,6 @@ export default {
   height: unset;
   padding: 10px;
   background-color: #7f74b7;
-  // color: white;
   @media (min-width: 786px) {
     padding: 15px;
   }
