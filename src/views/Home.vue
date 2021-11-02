@@ -1,7 +1,6 @@
 <template>
   <div class="Calendar">
     <div class="month_calendar"></div>
-    <pre>{{ events }}</pre>
     <div class="weekly_calendar">
       <v-sheet tile height="54" class="navbar">
         <h1 class="calendar_title" v-if="type === 'week'">預約行事曆</h1>
