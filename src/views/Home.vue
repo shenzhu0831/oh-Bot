@@ -1,6 +1,7 @@
 <template>
   <div class="Calendar">
     <div class="month_calendar"></div>
+    <pre>{{ events }}</pre>
     <div class="weekly_calendar">
       <v-sheet tile height="54" class="navbar">
         <h1 class="calendar_title" v-if="type === 'week'">預約行事曆</h1>
@@ -56,8 +57,8 @@
           :event-overlap-threshold="30"
           :event-color="color"
           :hide-header="true"
-          @change="getEvents"
         ></v-calendar>
+        <!-- @change="getEvents" -->
       </v-sheet>
       <div class="add_event">
         <v-btn class="add_event_button" @click="addEvent()">新增預約</v-btn>
@@ -100,17 +101,27 @@ export default {
       });
       return acc;
     }, []);
-  },
-  methods: {
-    getEvents() {
-      this.events.push({
+
+    this.events = [
+      {
         name: `${"美甲保養"} \n ${"王小美"}`,
         start: dayjs().format("YYYY-MM-DD 14:00:00"),
         end: dayjs().format("YYYY-MM-DD 15:00:00"),
         color: this.color,
         timed: this.events.end,
-      });
-    },
+      },
+    ];
+  },
+  methods: {
+    // getEvents() {
+    //   this.events.push({
+    //     name: `${"美甲保養"} \n ${"王小美"}`,
+    //     start: dayjs().format("YYYY-MM-DD 14:00:00"),
+    //     end: dayjs().format("YYYY-MM-DD 15:00:00"),
+    //     color: this.color,
+    //     timed: this.events.end,
+    //   });
+    // },
     changeWeekAndDay(event) {
       this.type = event;
       this.isShow = !this.isShow;
